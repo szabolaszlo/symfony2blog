@@ -2,6 +2,7 @@
 
 namespace Blog\ModelBundle\Repository;
 
+use Blog\ModelBundle\Entity\Tag;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -36,6 +37,18 @@ class PostRepository extends EntityRepository
             ->orderBy('p.id', 'asc')
             ->setMaxResults(1);
         return $qb->getQuery()->getSingleResult();
+    }
+
+    /**
+     * @param Tag $tag
+     * @return array
+     */
+    public function findByTag(Tag $tag)
+    {
+        $qb = $this->getQueryBuilder()
+            ->setParameter('tag_id', $tag->getId())
+            ->innerJoin('p.tags', 't', 'WITH', 't.id = :tag_id');
+        return $qb->getQuery()->getResult();
     }
 
     /**

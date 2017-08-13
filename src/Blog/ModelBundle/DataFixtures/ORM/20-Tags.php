@@ -31,7 +31,17 @@ class Tags extends AbstractFixture implements OrderedFixtureInterface
         $t1->setName('news');
         $t1->addPost($this->getFirstPost($manager));
 
+        $t2 = new Tag();
+        $t2->setName('something');
+        $t2->addPost($this->getFirstPost($manager));
+        $t2->addPost($this->getSecondPost($manager));
+
+        $t3 = new Tag();
+        $t3->setName('something_else');
+
         $manager->persist($t1);
+        $manager->persist($t2);
+        $manager->persist($t3);
         $manager->flush();
     }
 
@@ -43,6 +53,16 @@ class Tags extends AbstractFixture implements OrderedFixtureInterface
     {
         $posts = $manager->getRepository('ModelBundle:Post')->findAll();
         return $posts[0];
+    }
+
+    /**
+     * @param ObjectManager $manager
+     * @return mixed
+     */
+    private function getSecondPost(ObjectManager $manager)
+    {
+        $posts = $manager->getRepository('ModelBundle:Post')->findAll();
+        return $posts[1];
     }
 
     /**

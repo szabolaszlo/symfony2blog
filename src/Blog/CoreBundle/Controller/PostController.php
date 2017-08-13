@@ -28,11 +28,14 @@ class PostController extends Controller
 
         $latestPosts = $this->getDoctrine()->getRepository('ModelBundle:Post')->findLatest(5);
 
+        $usedTags = $this->getDoctrine()->getRepository('ModelBundle:Tag')->findUsedTags();
+
         return $this->render(
             'CoreBundle:Post:index.html.twig',
             array(
                 'posts' => $posts,
-                'latestPosts' => $latestPosts
+                'latestPosts' => $latestPosts,
+                'usedTags' => $usedTags
             )
         );
     }

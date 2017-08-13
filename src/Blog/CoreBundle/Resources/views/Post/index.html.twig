@@ -9,6 +9,12 @@
         {% for post in latestPosts %}
             <p><a href="{{ path('blog_core_post_show', { slug: post.slug }) }}">{{ post.title }}</a></p>
         {% endfor %}
+
+        <h3>{{ 'tag.plural' | trans }}</h3>
+
+        {% for tag in usedTags %}
+            <p><a href="{{ path('blog_core_tag_show', { slug: tag.slug }) }}">{{ tag.name }}</a></p>
+        {% endfor %}
     </aside>
 {% endblock %}
 
