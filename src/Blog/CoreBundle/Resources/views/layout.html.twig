@@ -9,13 +9,18 @@
         <p>Symfony2 Blog</p>
         <nav>
             <ul>
-                <li><a href="#">{{ 'home' | trans }}</a></li>
+                <li><a href="{{ path('blog_core_post_index') }}">{{ 'home' | trans }}</a></li>
             </ul>
         </nav>
     </header>
     {% block sidebar %}{% endblock %}
 
     <section>
+        {% for type, messages in app.session.flashbag.all() %}
+            {% for message in messages %}
+                <p class="session-message">{{ message }}</p>
+            {% endfor %}
+        {% endfor %}
         {% block section %}{% endblock %}
     </section>
 
