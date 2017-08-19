@@ -142,4 +142,12 @@ class Author extends TimeStampAble
     {
         return $this->posts;
     }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->name;
+    }
 }
