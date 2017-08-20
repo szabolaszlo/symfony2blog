@@ -146,4 +146,12 @@ class Tag
     {
         return $this->posts;
     }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->name;
+    }
 }

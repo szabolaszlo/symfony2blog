@@ -250,4 +250,12 @@ class Post extends TimeStampAble
     {
         return $this->comments;
     }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->title;
+    }
 }

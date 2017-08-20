@@ -23,6 +23,10 @@
             <th>Body</th>
             <td>{{ post.body | nl2br }}</td>
         </tr>
+        <tr>
+            <th>Tags</th>
+            <td>{{ post.tags | join(',') }}</td>
+        </tr>
         </tbody>
     </table>
 
