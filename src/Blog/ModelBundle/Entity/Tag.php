@@ -41,7 +41,7 @@ class Tag
     /**
      * @var ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="Post", inversedBy="tags")
+     * @ORM\ManyToMany(targetEntity="Post", mappedBy="posts", cascade={"persist"})
      * @ORM\JoinTable(name="posts_tags")
      */
     private $posts;

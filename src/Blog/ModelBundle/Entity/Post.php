@@ -67,7 +67,8 @@ class Post extends TimeStampAble
     /**
      * @var ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="Tag", mappedBy="posts")
+     * @ORM\ManyToMany(targetEntity="Tag", inversedBy="posts")
+     * @ORM\JoinTable(name="posts_tags")
      */
     private $tags;
 
