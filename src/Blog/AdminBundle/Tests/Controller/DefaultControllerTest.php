@@ -15,8 +15,8 @@ class DefaultControllerTest extends WebTestCase
     public function testIndex()
     {
         $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'admin',
-            'PHP_AUTH_PW'   => 'admin',
+            'PHP_AUTH_USER' => 'superadmin',
+            'PHP_AUTH_PW'   => 'superadmin',
         ));
 
         $crawler = $client->request('GET', '/admin/');

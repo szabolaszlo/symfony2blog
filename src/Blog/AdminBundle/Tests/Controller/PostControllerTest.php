@@ -16,8 +16,8 @@ class PostControllerTest extends WebTestCase
     {
         // Create a new client to browse the application
         $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'admin',
-            'PHP_AUTH_PW'   => 'admin',
+            'PHP_AUTH_USER' => 'superadmin',
+            'PHP_AUTH_PW'   => 'superadmin',
         ));
 
         // Create a new entry in the database
@@ -28,12 +28,17 @@ class PostControllerTest extends WebTestCase
         // Get the author value
         $authorValue = $crawler->filter('#post_author option:contains("David")')->attr('value');
 
+        // Get tag values
+        $tagValue1 = $crawler->filter('#post_tags option:contains("news")')->attr('value');
+        $tagValue2 = $crawler->filter('#post_tags option:contains("something")')->attr('value');
+
         // Fill in the form and submit it
         $form = $crawler->selectButton('Create')->form(
             array(
                 'post[title]'  => 'New post',
                 'post[body]'   => 'This is a new post',
                 'post[author]' => $authorValue,
+                'post[tags]' => array($tagValue1, $tagValue2),
             )
         );
 
