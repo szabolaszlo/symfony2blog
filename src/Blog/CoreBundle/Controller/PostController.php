@@ -1,75 +1,59 @@
 <?php
-
 namespace Blog\CoreBundle\Controller;
-
+use Blog\CoreBundle\Services\PostManager;
 use Blog\ModelBundle\Entity\Comment;
 use Blog\ModelBundle\Form\CommentType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
 /**
  * Class PostController
- * @package Blog\CoreBundle\Controller
+ *
+ * @Route("/{_locale}", requirements={"_locale"="en|es"}, defaults={"_locale"="en"})
  */
 class PostController extends Controller
 {
     /**
-     * @Route("/")
+     * Show the posts index
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return array
+     *
+     * @Route("/")
+     * @Template()
      */
     public function indexAction()
     {
-        $posts = $this->getDoctrine()->getRepository('ModelBundle:Post')->findAll();
-
-        $latestPosts = $this->getDoctrine()->getRepository('ModelBundle:Post')->findLatest(5);
-
+        $posts = $this->getPostManager()->findAll();
+        $latestPosts = $this->getPostManager()->findLatest(5);
         $usedTags = $this->getDoctrine()->getRepository('ModelBundle:Tag')->findUsedTags();
-
-        return $this->render(
-            'CoreBundle:Post:index.html.twig',
-            array(
-                'posts' => $posts,
-                'latestPosts' => $latestPosts,
-                'usedTags' => $usedTags
-            )
+        return array(
+            'posts' => $posts,
+            'latestPosts' => $latestPosts,
+            'usedTags'=> $usedTags
         );
     }
-
     /**
-     * @param $slug
+     * Show a post
+     *
+     * @param string $slug
+     *
+     * @return array
      *
      * @Route("/{slug}")
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @Template()
      */
     public function showAction($slug)
     {
-        $post = $this->getDoctrine()->getRepository('ModelBundle:Post')->findOneBy(
-            array(
-                'slug' => $slug
-            )
-        );
-
-        if ($post === null) {
-            throw $this->createNotFoundException('Post not found');
-        }
-
+        $post = $this->getPostManager()->findBySlug($slug);
         $form = $this->createForm(new CommentType());
-
-        return $this->render(
-            'CoreBundle:Post:show.html.twig',
-            array(
-                'post' => $post,
-                'form' => $form->createView(),
-            )
+        return array(
+            'post' => $post,
+            'form' => $form->createView(),
         );
     }
-
     /**
      * Create comment
      *
@@ -107,5 +91,14 @@ class PostController extends Controller
             'post' => $post,
             'form' => $form->createView(),
         );
+    }
+    /**
+     * Get Post manager
+     *
+     * @return PostManager
+     */
+    private function getPostManager()
+    {
+        return $this->get('postManager');
     }
 }

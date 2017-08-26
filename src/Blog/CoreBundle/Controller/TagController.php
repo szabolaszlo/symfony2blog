@@ -7,6 +7,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+/**
+ * Class TagController
+ * @package Blog\CoreBundle\Controller
+ * @Route("/{_locale}/tag", requirements={"_locale"="en|es"}, defaults={"_locale"="en"})
+ */
 class TagController extends Controller
 {
     /**
@@ -16,7 +21,7 @@ class TagController extends Controller
      *
      * @throws NotFoundHttpException
      *
-     * @Route("/tag/{slug}")
+     * @Route("/{slug}")
      *
      * @Template()
      */
