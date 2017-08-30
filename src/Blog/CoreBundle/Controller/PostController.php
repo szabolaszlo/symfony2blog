@@ -48,10 +48,17 @@ class PostController extends Controller
     public function showAction($slug)
     {
         $post = $this->getPostManager()->findBySlug($slug);
+
+        $setting = $this->getDoctrine()->getRepository('ModelBundle:Setting')->findOneBy(
+            array('settingKey' => 'guest_comment')
+        );
+
         $form = $this->createForm(new CommentType());
+
         return array(
             'post' => $post,
             'form' => $form->createView(),
+            'guest_comment' => $setting ? $setting->getSettingSwitch() : false
         );
     }
     /**

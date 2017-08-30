@@ -30,7 +30,11 @@ class PostController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $posts = $em->getRepository('ModelBundle:Post')->findAll();
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+
+        $posts = $em->getRepository('ModelBundle:Post')->findBy(
+            array('author'=> $user)
+        );
 
         return array(
             'posts' => $posts,

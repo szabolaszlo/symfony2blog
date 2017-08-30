@@ -1,0 +1,19 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+
+{% block title %}Settings{% endblock %}
+
+{% block section %}
+    <h1>Settings</h1>
+
+    <form action="{{ path('blog_admin_setting_edit') }}" method="post">
+        {% for setting in settings %}
+            <label for="anonymous_comment">{{ setting.settingKey }}</label>
+            <select required="required" id="anonymous_comment" name="settings[{{ setting.settingKey }}]">
+                <option value="1" {{ setting.settingSwitch ? ' selected="selected"' : '' }}>yes</option>
+                <option value="0" {{ setting.settingSwitch ? '' : ' selected="selected"' }}>no</option>
+            </select>
+            <br>
+        {% endfor %}
+        <button type="submit">Save</button>
+    </form>
+{% endblock %}

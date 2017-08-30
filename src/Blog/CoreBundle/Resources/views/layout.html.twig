@@ -1,7 +1,7 @@
 {% extends "::base.html.twig" %}
 
 {% block stylesheets %}
-<link rel="stylesheet" type="text/css" href="{{ asset('bundles/core/css/main.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/core/css/main.css') }}">
 {% endblock %}
 
 {% block body %}
@@ -10,6 +10,12 @@
         <nav>
             <ul>
                 <li><a href="{{ path('blog_core_post_index') }}">{{ 'home' | trans }}</a></li>
+                {% if app.user %}
+                    <li><a href="{{ path('blog_core_security_logout') }}">Logout</a></li>
+                {% else %}
+                    <li><a href="{{ path('blog_core_registration_index') }}">Register</a></li>
+                    <li><a href="{{ path('blog_core_security_login') }}">Login</a></li>
+                {% endif %}
             </ul>
         </nav>
     </header>

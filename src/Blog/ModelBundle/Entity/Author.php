@@ -4,6 +4,7 @@ namespace Blog\ModelBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -13,7 +14,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="author")
  * @ORM\Entity(repositoryClass="Blog\ModelBundle\Repository\AuthorRepository")
  */
-class Author extends TimeStampAble
+class Author extends TimeStampAble implements UserInterface, \Serializable
 {
     /**
      * @var int
@@ -35,6 +36,22 @@ class Author extends TimeStampAble
     /**
      * @var string
      *
+     * @ORM\Column(name="password", type="string", length=20)
+     * @Assert\NotBlank
+     */
+    private $password;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="roles", type="string", length=20)
+     * @Assert\NotBlank
+     */
+    private $roles;
+
+    /**
+     * @var string
+     *
      * @Gedmo\Slug(fields={"name"}, unique=false)
      * @ORM\Column(length=255)
      */
@@ -52,6 +69,7 @@ class Author extends TimeStampAble
      */
     public function __construct()
     {
+        $this->roles = 'ROLE_SUPER_ADMIN';
         $this->posts = new ArrayCollection();
     }
 
@@ -149,5 +167,99 @@ class Author extends TimeStampAble
     public function __toString()
     {
         return $this->name;
+    }
+
+    /**
+     * Set password
+     *
+     * @param string $password
+     *
+     * @return Author
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Get password
+     *
+     * @return string
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    /**
+     * Set roles
+     *
+     * @param string $roles
+     *
+     * @return Author
+     */
+    public function setRoles($roles)
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * Get roles
+     *
+     * @return array
+     */
+    public function getRoles()
+    {
+        return array($this->roles);
+    }
+
+    /**
+     * Get Username
+     *
+     * @return string
+     */
+    public function getUsername()
+    {
+        return $this->getName();
+    }
+
+    /**
+     * Get Salt
+     *
+     * @return null
+     */
+    public function getSalt()
+    {
+        return null;
+    }
+
+
+    public function eraseCredentials()
+    {
+        $this->password = '';
+    }
+
+    /** @see \Serializable::serialize() */
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->name,
+            $this->password,
+        ));
+    }
+
+    /** @see \Serializable::unserialize() */
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->name,
+            $this->password,
+            ) = unserialize($serialized);
     }
 }

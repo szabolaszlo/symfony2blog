@@ -10,6 +10,9 @@ imports:
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
+    string_decorator_star: '*'
+    string_decorator_flurry: '!'
+
 
 framework:
     #esi: ~
@@ -36,6 +39,14 @@ framework:
 services:
     twig.extension.text:
         class: Twig_Extensions_Extension_Text
+        tags:
+            - { name: twig.extension }
+
+    string_decorator.twig_extension:
+        class: Blog\CoreBundle\Twig\StringDecoratorExtension
+        arguments:
+            - '%string_decorator_star%'
+        public: false
         tags:
             - { name: twig.extension }
 
